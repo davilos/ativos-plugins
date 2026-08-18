@@ -1,0 +1,8 @@
+{
+  "name": "radar",
+  "description": "Plugins específicos do projeto Radar — bulk refactor playbook",
+  "version": "0.1.0",
+  "author": {
+    "name": "Ativos"
+  }
+}

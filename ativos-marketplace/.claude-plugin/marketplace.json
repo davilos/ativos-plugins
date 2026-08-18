@@ -1,0 +1,14 @@
+{
+  "name": "ativos",
+  "owner": {
+    "name": "Ativos"
+  },
+  "description": "Claude Code plugins da organização Ativos",
+  "plugins": [
+    {
+      "name": "radar",
+      "source": "./plugins/radar-team",
+      "description": "Plugins específicos do projeto Radar (bulk-refactor)"
+    }
+  ]
+}
