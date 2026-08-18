@@ -8,7 +8,7 @@
     {
       "name": "radar",
       "source": "./plugins/radar-team",
-      "description": "Plugins específicos do projeto Radar (bulk-refactor)"
+      "description": "Skills específicas do projeto Radar"
     }
   ]
 }

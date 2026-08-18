@@ -1,6 +1,6 @@
 {
   "name": "radar",
-  "description": "Plugins específicos do projeto Radar — bulk refactor playbook",
+  "description": "Skills específicas do projeto Radar",
   "version": "0.1.0",
   "author": {
     "name": "Ativos"
