@@ -6,7 +6,7 @@ Marketplace de plugins do Claude Code para a organização Ativos.
 
 | Plugin  | Descrição                          | Skills                |
 |---------|--------------------------------------|------------------------|
-| `radar` | Skills específicas do projeto Radar | `bulk-refactor` (mais serão adicionadas) |
+| `radar` | Skills específicas do projeto Radar | `bulk-refactor`, `create-pr` (mais serão adicionadas) |
 
 ## Como usar em outro projeto
 
@@ -21,7 +21,7 @@ Dentro do Claude Code, no projeto onde você quer usar o plugin:
 /plugin install radar@ativos
 ```
 
-Depois disso a skill `bulk-refactor` fica disponível nesse projeto.
+Depois disso as skills `bulk-refactor` e `create-pr` ficam disponíveis nesse projeto.
 
 Para atualizar depois que novos plugins forem adicionados aqui:
 
@@ -41,6 +41,8 @@ plugins/
     skills/
       bulk-refactor/
         SKILL.md          ← definição da skill
+      create-pr/
+        SKILL.md          ← gera título/descrição de PR e cria via `gh pr create`
       <outras-skills>/    ← novas skills do projeto Radar entram aqui
         SKILL.md
 ```
