@@ -10,9 +10,8 @@ Marketplace de plugins do Claude Code para a Ativos Precatórios.
 
 ## Como usar em outro projeto
 
-Este repositório é **privado**, então é preciso ter acesso git normal a ele
-(SSH key cadastrada no GitHub, ou `gh auth login`) na máquina onde o Claude
-Code vai rodar.
+Este repositório é **público**, então não é preciso nenhuma credencial git
+para acessá-lo.
 
 Dentro do Claude Code, no projeto onde você quer usar o plugin:
 
