@@ -1,9 +1,10 @@
 ---
 name: create-pr
-description: Analisa os commits da branch atual (desde que ela diverge da branch base, normalmente main) e o nome da branch para gerar o título e a descrição de um Pull Request, então cria o PR automaticamente via `gh pr create`. O tipo do PR (feat/fix/refactor/chore/...) é inferido do prefixo do nome da branch, com fallback para o tipo dominante nos commits (formato Conventional Commits já usado neste repo). A descrição lista as tarefas realizadas, extraídas das mensagens de commit. Invocar a skill já é o pedido explícito de publicar — ela push a branch e abre o PR, não é um dry-run. Aciona em "criar PR", "abrir pull request", "gera a descrição do PR", "abre um PR pra essa branch".
+description: Analisa os commits da branch atual (desde que ela diverge da branch base, sempre `develop`) e o nome da branch para gerar o título e a descrição de um Pull Request, então cria o PR automaticamente via `gh pr create`. O tipo do PR (feat/fix/refactor/chore/...) é inferido do prefixo do nome da branch, com fallback para o tipo dominante nos commits (formato Conventional Commits já usado neste repo). A descrição lista as tarefas realizadas, extraídas das mensagens de commit. Invocar a skill já é o pedido explícito de publicar — ela push a branch e abre o PR, não é um dry-run. Aciona em "criar PR", "abrir pull request", "gera a descrição do PR", "abre um PR pra essa branch".
 metadata:
-  version: 1.0.0
-  origin: criada em 2026-08-18 durante a sessão da branch fix-lint-errors (radar)
+  version: 1.1.0
+  origin: criada em 2026-08-18 durante a sessão da branch fix-lint-errors (radar);
+    base fixada em `develop` em 2026-08-20
 ---
 
 # Create PR
@@ -23,11 +24,12 @@ título/corpo sem executar a Fase 5).
 ## Fase 1 — Determinar branch atual e branch base
 
 - `git branch --show-current` para a branch de origem do PR.
-- Branch base: normalmente `main` — confirme com `git remote show origin | grep
-  'HEAD branch'` se o projeto não deixar isso óbvio, em vez de assumir `main` às
-  ciegas em repositórios que você não conhece.
-- `git merge-base <base> HEAD` define o ponto de divergência; os commits
-  relevantes são `git log <base>..HEAD`.
+- Branch base: sempre `develop`, independente do projeto ou do que `git remote
+  show origin` indicar como HEAD branch — não pergunte nem tente inferir outra
+  base. Se `develop` não existir no remoto, pare e avise o usuário em vez de
+  usar outra branch como fallback.
+- `git merge-base develop HEAD` define o ponto de divergência; os commits
+  relevantes são `git log develop..HEAD`.
 
 ## Fase 2 — Inferir o tipo do PR a partir do nome da branch
 
@@ -39,12 +41,12 @@ título/corpo sem executar a Fase 5).
   `test`.
 - Se o token não é um tipo conhecido (ex.: `update-dependencies`), não adivinhe
   pelo nome — olhe a distribuição real dos tipos nos commits do range
-  (`git log <base>..HEAD --pretty=%s`, extraindo o prefixo `tipo(scope):`) e use
+  (`git log develop..HEAD --pretty=%s`, extraindo o prefixo `tipo(scope):`) e use
   o mais frequente. Se ainda ficar ambíguo, pergunte ao usuário antes de titular.
 
 ## Fase 3 — Coletar e sintetizar os commits em tarefas
 
-- `git log <base>..HEAD --no-merges --pretty=format:'%s'`, em ordem cronológica
+- `git log develop..HEAD --no-merges --pretty=format:'%s'`, em ordem cronológica
   (mais antigo primeiro) — o PR conta a história na ordem em que a mudança foi
   construída, não invertida.
 - Para cada commit, remova o prefixo `tipo(scope):` e use o restante como uma
@@ -80,8 +82,10 @@ título/corpo sem executar a Fase 5).
   e avise o usuário — decidir o que entra em qual commit não é papel desta skill.
 - `git push -u origin <branch>` (nunca `--force`) se a branch ainda não tem
   upstream ou está atrás/à frente do remoto.
-- `gh pr create --title "<título>" --body "$(cat <<'EOF' ... EOF)"`, usando
-  heredoc para preservar a formatação do corpo.
+- `gh pr create --base develop --title "<título>" --body "$(cat <<'EOF' ...
+  EOF)"`, usando heredoc para preservar a formatação do corpo. Sempre passe
+  `--base develop` explicitamente — não confie no branch padrão do repositório
+  no GitHub, que pode ser `main`.
 - Devolva a URL do PR ao usuário ao final.
 
 ## O que a skill não faz
