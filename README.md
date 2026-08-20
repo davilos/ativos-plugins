@@ -6,7 +6,7 @@ Marketplace de plugins do Claude Code para a Ativos Precatórios.
 
 | Plugin  | Descrição                          | Skills                |
 |---------|--------------------------------------|------------------------|
-| `radar` | Skills específicas do projeto Radar | `bulk-refactor`, `create-pr` (mais serão adicionadas) |
+| `radar` | Skills específicas do projeto Radar | `bulk-refactor`, `create-pr`, `pr-quality-gate` (mais serão adicionadas) |
 
 ## Como usar em outro projeto
 
@@ -21,7 +21,7 @@ Dentro do Claude Code, no projeto onde você quer usar o plugin:
 /plugin install radar@ativos
 ```
 
-Depois disso as skills `bulk-refactor` e `create-pr` ficam disponíveis nesse projeto.
+Depois disso as skills `bulk-refactor`, `create-pr` e `pr-quality-gate` ficam disponíveis nesse projeto.
 
 Para atualizar depois que novos plugins forem adicionados aqui:
 
@@ -43,15 +43,21 @@ plugins/
         SKILL.md          ← definição da skill
       create-pr/
         SKILL.md          ← gera título/descrição de PR e cria via `gh pr create`
+      pr-quality-gate/
+        SKILL.md          ← verifica e corrige os quality gates de uma PR até merge-ready
       <outras-skills>/    ← novas skills do projeto Radar entram aqui
         SKILL.md
 ```
 
 ## Como adicionar uma nova skill a um plugin existente
 
-Basta criar `plugins/<plugin>/skills/<nome-da-skill>/SKILL.md`. Não precisa
-mexer em `plugin.json` nem em `marketplace.json` — quem já instalou o plugin
-recebe a skill nova ao rodar `/plugin marketplace update ativos`.
+Criar `plugins/<plugin>/skills/<nome-da-skill>/SKILL.md` não basta: também é
+preciso dar bump no `version` de `plugin.json` do plugin. Quem já instalou o
+plugin só recebe a skill nova ao rodar `/plugin marketplace update ativos` se
+a versão declarada mudou — a detecção de atualização compara essa versão, não
+o SHA do git. Sem o bump, o cache local do plugin fica parado na skill antiga
+mesmo depois do `update` (visto na prática em `20d4df8` e `b56f916`). Não é
+preciso mexer em `marketplace.json` para isso.
 
 ## Como adicionar um novo plugin
 
