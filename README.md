@@ -1,6 +1,6 @@
 # Ativos Plugins
 
-Marketplace de plugins do Claude Code para a organização Ativos.
+Marketplace de plugins do Claude Code para a Ativos Precatórios.
 
 ## Plugins disponíveis
 
